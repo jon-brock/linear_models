@@ -1,0 +1,70 @@
+---
+title: "Linear Models"
+author: "Jon Brock"
+date: "11/11/2019"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+library(p8105.datasets)
+
+set.seed(1)
+```
+
+```{r}
+data("nyc_airbnb")
+
+nyc_airbnb = 
+  nyc_airbnb %>% 
+  mutate(stars = review_scores_location / 2) %>% 
+  rename(
+    boro = neighbourhood_group,
+    neighborhood = neighbourhood) %>% 
+  filter(boro != "Staten Island") %>% 
+  select(price, stars, boro, neighborhood, room_type)
+```
+
+Fit a linear model
+
+```{r}
+fit <- lm(price ~ stars + boro, data = nyc_airbnb)
+```
+
+```{r}
+fit
+
+summary(fit)
+coef(fit)
+summary(fit)$coef
+```
+
+## Tidy the results
+```{r}
+fit %>% 
+    broom::tidy() %>% 
+    mutate(term = str_replace(term, "boro", "Boro: ")) %>% 
+    knitr::kable(digits = 3)
+```
+
+
+## Take a look at factors
+```{r}
+nyc_airbnb <- 
+    nyc_airbnb %>% 
+    mutate(
+        boro = fct_infreq(boro), # fct_infreq will reorder factors according to frequency
+        room_type = fct_infreq(room_type))
+```
+
+## Refit the last model
+```{r}
+fit <- lm(price ~ stars + boro, data = nyc_airbnb)
+
+fit %>% 
+    broom::tidy() # more useful function of broom
+
+fit %>%
+    broom::glance() # good to know that this broom function exists
+```
+

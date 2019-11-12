@@ -1,0 +1,18 @@
+---
+title: "Cross Validation"
+date: "11/12/2019"
+output: github_document
+---
+
+```{r load packages}
+library(tidyverse)
+library(modelr)
+library(mgcv)
+
+set.seed(1)
+```
+
+```{r}
+
+```
+

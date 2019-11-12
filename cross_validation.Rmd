@@ -84,3 +84,7 @@ rmse(smooth_mod, test_df)
 rmse(wiggly_mod, test_df)
 ```
 
+```{r iterate data splits}
+cv_df <- crossv_mc(nonlin_df, 100)
+```
+
